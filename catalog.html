@@ -2,10 +2,16 @@
 <html>
 
 <head>
+
 <link rel="stylesheet" type="text/css" href="catalog.css">
-<script src="catalog.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<link rel="stylesheet" href="/lib/w3.css">
+<script src="catalog.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+
+
 </head>
 
 <body>
@@ -15,7 +21,8 @@
 <div class="playground">
 <table id="myTable">
 	<thead>
-        <td> Checkbox </td>
+        <td id="checkBox"> Check<br>box </td>
+		<td id="checkBox"> Nr </td>
 		<td> First name </td>
 		<td> Last Name</td>
 		<td> Status </td>
@@ -31,10 +38,25 @@
 
 </table>
 
-<button type="button" class="addButton">Add new person </button>
-<button type="button" class="deleteButton">Delete </button>
-
+<button id="opener" class="addButton" >Add new person </button>
+<div id="wrapper">
+<label for="firstName"> First Name: </label>
+<input type="text" id="firstName">
+<label for="lastName"> Last Name: </label>
+<input type="text" id="lastName"> 
+<br><br><br><br>
+<label for="yearOfBirth"> Year of birth: </label>
+<input type="text" id="yearOfBirth">
+<label for="adress"> Adress: </label>
+<input type="text" id="adress">
+<label for="phoneNumber"> Phone number: </label>
+<input type="text" id="phoneNumber">
+<label for="status"> Status: </label>
+<input type="text" id="status"> 
 </div>
+<button type="button" class="deleteButton">Delete </button>
+</div>
+
 
 
 </body>
