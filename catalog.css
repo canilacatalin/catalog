@@ -12,6 +12,11 @@ h1 {
 	margin:auto;
 }
 
+input[type=checkbox]
+{
+  -moz-transform: scale(2);
+  padding: 10px;
+}
 #checkBox {
 	width: 60px;
 	font-size: 25px;
@@ -66,4 +71,10 @@ td {
 label {
 	color: white;
 	font-size: 20px;
+}
+
+#addButton {
+	margin-top: 140px;
+	margin-left: 160px;
+	position: absolute;
 }
