@@ -18,18 +18,75 @@
                 $('#opener').click(function() {
                 $('#wrapper').dialog('open');
                 });
+				
 
-		var nr = 0;
-	$("#addButton").click(function(){
-		nr+=1;
+		$("#addButton").click(function(){
+			
+			
+			addToList();
+			addToTable();
+			clear();
+			
+		});
+ });
+
+	var contactList = [];
+	var firstName = document.getElementById("firstName");
+	var lastName = document.getElementById("lastName");
+	var status = document.getElementById("status");
+	var yearOfBirth = document.getElementById("yearOfBirth");
+	var address = document.getElementById("address");
+	var phoneNumber = document.getElementById("phoneNumber");
+	/*var firstname = $("#firstName").val();
+	var lastname = $("#lastName").val();
+	var status = $("#status").val();
+	var address = $("#address").val();
+	var phonenumber = $("#phoneNumber").val();*/
+	
+	
+	function Details(firstName, lastName, status, yearOfBirth, address, phoneNumber)
+	{
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.status = status;
+		this.yearOfBirth = yearOfBirth;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+	}
+	
+	function addToList(){
+		if(firstName.value!="" && lastName.value!="" && status.value!="")
+		{
+			var contact = new Details(firstName.value, lastName.value, status.value, yearOfBirth.value, address.value, phoneNumber.value);
+			contactList.push(contact);	
+		}
+		
+	}
+		
+	function addToTable(){
+		for( var i in contactList)
+		{
+			$("#myTable").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="rowID" id="checkBox"></td> <td>' + contactList[i].firstName + '</td> <td>' + contactList[i].lastName + '</td> <td>'
+			+ contactList[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit()"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');
+		}
+	}
+		
+	function clear(){
+		$('#wrapper').dialog('close');
+		var selectAll = document.querySelectorAll(".inputs");
+		for(var i in selectAll){
+			selectAll[i].value = '';
+		}
+	}
+	/*$("#addButton").click(function(){
 		var firstName = $("#firstName").val();
 		var lastName = $("#lastName").val();
 		var status = $("#status").val();
-	if(firstName!="" && lastName!="" && status!="")
-	{
-		$("#myTable").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="rowID" id="checkBox">' + nr + '</td> <td>' + firstName + '</td> <td>' + lastName + '</td> <td>' + status + 
-		'</td> <td> <input id="edit" type="button" value="Edit" onClick="edit()"></td></tr>');
-	}
+		if(firstName!="" && lastName!="" && status!="")
+		{
+		$("#myTable").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="rowID" id="checkBox"></td> <td>' + firstName + '</td> <td>' + lastName + '</td> <td>' + status + 
+		'</td> <td> <input id="edit" type="button" value="Edit" onClick="edit()"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');
+		}
 
 		$('#wrapper').dialog('close');
 		$("#firstName").val("");
@@ -38,14 +95,13 @@
 		$("#phoneNumber").val("");
 		$("#yearOfBirth").val("");
 		$("#address").val("");
-	
+		updateNr();
 	});
 	$(".deleteButton").click(function(){
 		removeCheckedRows('myTable');
-		$(".rowID").each(function(i) {
-			$(this).text(i+1);
-		});
+		updateNr();
 	});
+	
 });
 
 function removeCheckedRows(tableID){
@@ -65,8 +121,17 @@ function removeCheckedRows(tableID){
 	}
 }		
 			
-			
-			
+function deleteThisRow(e){
+	var thisRow = e.parentNode.parentNode.rowIndex;
+	myTable.deleteRow(thisRow);
+	updateNr();
+}
+
+function updateNr(){
+	$(".rowID").each(function(i) {
+			$(this).text(i+1);
+		});
+}*/
 			
 			
 			
