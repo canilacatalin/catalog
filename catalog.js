@@ -30,9 +30,16 @@
 		$(".deleteButton").click(function(){
 		removeCheckedRows('myTable', contactList);
 		refreshTable(contactList);	
-		
+		});
+	$("#statusOptions").click(function(){
+        $("#panel").slideToggle("slow");
+    });
+	$("#student").click(function(){
+		filter("student");
 	});
-	
+	$("#teacher").click(function(){
+		filter("teacher");
+	});
  });
 
 	var contactList = [];
@@ -143,14 +150,13 @@ function deleteThisRow(e){
 	$('#wrapper').dialog('open');
 }*/
 			
-function edit(){ //filter
+function filter(e){ 
 	var number = 1;
 	var objTable = document.getElementById("myTable").tBodies[0]; 
-	rowCount = objTable.rows.length;
 	var Table = document.getElementById("tableBody");
 	Table.innerHTML = "";
-	var schoolStatus = "student";
-	for(var i = 0; i < rowCount; i++)
+	var schoolStatus = e;
+	for(var i = 0; i < contactList.length; i++)
 	{
 		if(schoolStatus === contactList[i].status)
 		{

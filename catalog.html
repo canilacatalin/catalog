@@ -25,7 +25,8 @@
 		<td id="checkBox"> Nr </td>
 		<td> First Name </td>
 		<td> Last Name</td>
-		<td> Status </td>
+		<td> <button id="statusOptions">Status </button> </td>
+		<div id="panel"> <button id="student" class="studentOption"> Filter student </button> <button class="teacherOption" id="teacher"> Filter teacher </div>
 		<td> Operations </td>      
     </thead>
             <tbody id="tableBody">
@@ -51,8 +52,12 @@
 <input type="text" id="address" class="inputs">
 <label for="phoneNumber"> Phone number: </label>
 <input type="text" id="phoneNumber" class="inputs">
-<label for="status"> Status: </label>
-<input type="text" id="status" class="inputs"> 
+<select id="status">
+<option label="student" > student </option>
+<option label="teacher" > teacher </option>
+<!--<label for="status"> Status: </label>
+<input type="text" id="status" class="inputs"> -->
+</select>
 <input type="button" id="addButton" value="Add contact to table">
 </div>
 <button type="button" class="deleteButton">Delete </button>

@@ -78,3 +78,21 @@ label {
 	margin-left: 160px;
 	position: absolute;
 }
+#panel {
+	height:100px;
+	display:none;
+	position: absolute;
+}
+#statusOptions {
+	font-size: 30px;
+	font-family: Impact;
+}
+.studentOption {
+	font-size: 20px;
+	font-family: Impact;
+	margin-left: 600px;
+}
+.teacherOption{
+	font-size: 20px;
+	font-family: Impact;
+}
