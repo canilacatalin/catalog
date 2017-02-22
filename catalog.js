@@ -29,7 +29,7 @@
 		});
 		$(".deleteButton").click(function(){
 		removeCheckedRows('myTable', contactList);
-		refreshTable(contactList);
+		refreshTable(contactList);	
 		
 	});
 	
@@ -50,7 +50,7 @@
 	
 	function addToListnTable(){
 		
-		nr++;
+		//nr++;
 		var firstName = document.getElementById("firstName");
 		var lastName = document.getElementById("lastName");
 		var status = document.getElementById("status");
@@ -62,8 +62,9 @@
 			var contact = new Person(firstName.value, lastName.value, status.value, yearOfBirth.value, address.value, phoneNumber.value);
 			contactList.push(contact);	
 		}
-		$("#myTable").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="rowID" id="checkBox">' + nr + '</td> <td>' + firstName.value + '</td> <td>' + lastName.value + '</td> <td>' + status.value + 
-		'</td> <td> <input id="edit" type="button" value="Edit" onClick="edit()"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this, contactList)"> </td></tr>');
+		refreshTable(contactList);
+		/*$("#myTable").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="rowID" id="checkBox">' + nr + '</td> <td>' + firstName.value + '</td> <td>' + lastName.value + '</td> <td>' + status.value + 
+		'</td> <td> <input id="edit" type="button" value="Edit" onClick="edit()"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');*/
 		
 	}
 		
@@ -73,8 +74,8 @@
 		Table.innerHTML = "";
 		for( var i in list)
 		{
-			$("#myTable").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="RowID" id="checkBox">' + number + '</td> <td>' + list[i].firstName + '</td> <td>' + list[i].lastName + '</td> <td>'
-			+ list[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit()"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this, contactList)"> </td></tr>');
+			$("#tableBody").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="RowID" id="checkBox">' + number + '</td> <td>' + list[i].firstName + '</td> <td>' + list[i].lastName + '</td> <td>'
+			+ list[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit(this)"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');
 		number++;
 		}
 		
@@ -90,51 +91,75 @@
 	}
 
 
-function removeCheckedRows(tableID, list){
-	
-	
+function removeCheckedRows(tableID){
+	var j = -1;
 	var objTable = document.getElementById(tableID).tBodies[0];
 	var rowCount = objTable.rows.length;
-	if(objTable.rows.length > 1)
-	{
-		for( var i = 1; i < rowCount; i++){;
+	
+		for( var i = 0; i < rowCount; i++){;
+		
+			j++;
 			var row = objTable.rows[i];
 			var chkbox = row.cells[0].getElementsByTagName('input')[0];
 			if(null!=chkbox && true == chkbox.checked) {
-				alert(i);
-				alert(list[i].firstName);
-				delete list[i];
+				//alert("i position " + i);
+				//alert("j position " + j);
+				//alert(contactList[j].firstName);
+				contactList.splice(j, 1);
+				j--;
+				//alert("j position after dec " + j);
 			}
 			
 		}
-	}
-	
 }		
 
 
 			
-function deleteThisRow(e, list){
+function deleteThisRow(e){
 	
-	
-	var thisRow = e.parentNode.parentNode.rowIndex;
+	var objTable = document.getElementById("myTable").tBodies[0]; 
+	rowCount = objTable.rows.length;
+	var fName = e.parentNode.parentNode.cells[2].textContent;
+	//alert(fName);
+	for( var i = 0; i < rowCount; i++)
+	{
+		if(fName === contactList[i].firstName)
+		{
+			contactList.splice(i, 1);
+		}
+		refreshTable(contactList);
+	}
+	/*var thisRow = e.parentNode.parentNode.rowIndex;
+	alert(thisRow);
 	var positionInArray = thisRow - 1;
 	alert(positionInArray);
-	alert(list[positionInArray].firstName);
-	delete list[positionInArray];
-	//refreshTable(list);
-	refreshTable(contactList);
+	alert(contactList[positionInArray].firstName);
+	delete contactList[positionInArray];
+	refreshTable(contactList);*/
 	
 }
 
-function updateNr(){
-	$(".rowID").each(function(i) {
-			$(this).text(i+1);
-		});
+/*function edit()	{
+	$('#wrapper').dialog('open');
+}*/
+			
+function edit(){ //filter
+	var number = 1;
+	var objTable = document.getElementById("myTable").tBodies[0]; 
+	rowCount = objTable.rows.length;
+	var Table = document.getElementById("tableBody");
+	Table.innerHTML = "";
+	var schoolStatus = "student";
+	for(var i = 0; i < rowCount; i++)
+	{
+		if(schoolStatus === contactList[i].status)
+		{
+			$("#tableBody").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="RowID" id="checkBox">' + number + '</td> <td>' + contactList[i].firstName + '</td> <td>' + contactList[i].lastName + '</td> <td>'
+			+ contactList[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit(this)"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');
+		}
+		number++;
+	}
 }
-			
-			
-			
-			
 			
 			
 			
