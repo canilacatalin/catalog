@@ -21,16 +21,18 @@
 				
 
 		$("#addButton").click(function(){
-			
-			
-			addToListnTable();
-			clear();
-			
+		addToListAndTable();
+		clearDialogAndInputFields();
 		});
-		$(".deleteButton").click(function(){
-		removeCheckedRows('myTable', contactList);
-		refreshTable(contactList);	
-		});
+		
+	
+    $('.deleteButton').click(function(){
+		removeCheckedRows(contactList);
+		regenerateTable(contactList);
+       });
+   
+
+		
 	$("#statusOptions").click(function(){
         $("#panel").slideToggle("slow");
     });
@@ -40,13 +42,19 @@
 	$("#teacher").click(function(){
 		filter("teacher");
 	});
+	$("#cancel").click(function(){
+		regenerateTable(contactList);
+		$("#panel").slideToggle();
+	});
  });
 
 	var contactList = [];
 	var nr = 0;
 	
-	function Person(firstName, lastName, status, yearOfBirth, address, phoneNumber)
+	// TODO : add ID - random number
+	function Person(ID, firstName, lastName, status, yearOfBirth, address, phoneNumber)
 	{
+		this.ID = ID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.status = status;
@@ -55,9 +63,9 @@
 		this.phoneNumber = phoneNumber;
 	}
 	
-	function addToListnTable(){
+	function addToListAndTable(){
 		
-		//nr++;
+		var ID = generateRandomUniqueID();
 		var firstName = document.getElementById("firstName");
 		var lastName = document.getElementById("lastName");
 		var status = document.getElementById("status");
@@ -66,30 +74,27 @@
 		var phoneNumber = document.getElementById("phoneNumber");
 		if(firstName.value!="" && lastName.value!="" && status.value!="")
 		{
-			var contact = new Person(firstName.value, lastName.value, status.value, yearOfBirth.value, address.value, phoneNumber.value);
+			var contact = new Person(ID, firstName.value, lastName.value, status.value, yearOfBirth.value, address.value, phoneNumber.value);
 			contactList.push(contact);	
 		}
-		refreshTable(contactList);
-		/*$("#myTable").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="rowID" id="checkBox">' + nr + '</td> <td>' + firstName.value + '</td> <td>' + lastName.value + '</td> <td>' + status.value + 
-		'</td> <td> <input id="edit" type="button" value="Edit" onClick="edit()"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');*/
-		
+		regenerateTable(contactList);		
 	}
-		
-	function refreshTable(list){
+	// TODO :  rename	
+	function regenerateTable(list){
 		var number = 1;
 		var Table = document.getElementById("tableBody");
 		Table.innerHTML = "";
 		for( var i in list)
 		{
-			$("#tableBody").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="RowID" id="checkBox">' + number + '</td> <td>' + list[i].firstName + '</td> <td>' + list[i].lastName + '</td> <td>'
-			+ list[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit(this)"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');
+			$("#tableBody").append('<tr><td id="smallBox"><input type="checkBox" id="'+ list[i].ID +'" class="checkBox"></td><td id="smallBox">' + number + '</td> <td>' + list[i].firstName + '</td> <td>' + list[i].lastName + '</td> <td>'
+			+ list[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit(this)"> <input type="button" value="Delete" onClick="deleteThisRow(this)" id="'+ list[i].ID +'"> </td></tr>');
 		number++;
 		}
 		
 	}
 	
-		
-	function clear(){
+	// TODO  :rename
+	function clearDialogAndInputFields(){
 		$('#wrapper').dialog('close');
 		var selectAll = document.querySelectorAll(".inputs");
 		for(var i in selectAll){
@@ -98,76 +103,57 @@
 	}
 
 
-function removeCheckedRows(tableID){
-	var j = -1;
-	var objTable = document.getElementById(tableID).tBodies[0];
-	var rowCount = objTable.rows.length;
+function removeCheckedRows(list){
 	
-		for( var i = 0; i < rowCount; i++){;
-		
-			j++;
-			var row = objTable.rows[i];
-			var chkbox = row.cells[0].getElementsByTagName('input')[0];
-			if(null!=chkbox && true == chkbox.checked) {
-				//alert("i position " + i);
-				//alert("j position " + j);
-				//alert(contactList[j].firstName);
-				contactList.splice(j, 1);
-				j--;
-				//alert("j position after dec " + j);
-			}
-			
-		}
-}		
-
-
-			
-function deleteThisRow(e){
-	
-	var objTable = document.getElementById("myTable").tBodies[0]; 
-	rowCount = objTable.rows.length;
-	var fName = e.parentNode.parentNode.cells[2].textContent;
-	//alert(fName);
-	for( var i = 0; i < rowCount; i++)
-	{
-		if(fName === contactList[i].firstName)
-		{
-			contactList.splice(i, 1);
-		}
-		refreshTable(contactList);
-	}
-	/*var thisRow = e.parentNode.parentNode.rowIndex;
-	alert(thisRow);
-	var positionInArray = thisRow - 1;
-	alert(positionInArray);
-	alert(contactList[positionInArray].firstName);
-	delete contactList[positionInArray];
-	refreshTable(contactList);*/
-	
+	$(".checkBox:checked").each(function(){
+		deleteById($(this).attr('id'));
+	});
 }
 
-/*function edit()	{
-	$('#wrapper').dialog('open');
-}*/
+function deleteById(ID)
+{
+	for(var i in contactList)
+	{
+		if(ID == contactList[i].ID){
+			contactList.splice(i,1);
+		}
+	}
+}
+	
+		
+function deleteThisRow(e){
+		deleteById($(e).attr('id'));
+		regenerateTable(contactList);
+}
+
+
 			
-function filter(e){ 
-	var number = 1;
-	var objTable = document.getElementById("myTable").tBodies[0]; 
-	var Table = document.getElementById("tableBody");
-	Table.innerHTML = "";
-	var schoolStatus = e;
+function filter(givenStatus){ 
+	var listOfThatStatus = [];
+	var schoolStatus = givenStatus;
 	for(var i = 0; i < contactList.length; i++)
 	{
 		if(schoolStatus === contactList[i].status)
 		{
-			$("#tableBody").append('<tr><td id="checkBox"><input type="checkBox"></td><td class="RowID" id="checkBox">' + number + '</td> <td>' + contactList[i].firstName + '</td> <td>' + contactList[i].lastName + '</td> <td>'
-			+ contactList[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit(this)"> <input id="deleteRow" type="button" value="Delete" onClick="deleteThisRow(this)"> </td></tr>');
+			listOfThatStatus.push(contactList[i]);
 		}
-		number++;
+	
 	}
+	regenerateTable(listOfThatStatus);
 }
-			
-			
-			
-			
+
+function generateRandomUniqueID(){
+	return Math.random().toString(36).substr(2, 9);
+}	
+
+function edit(e){
+	$('#wrapper').dialog('open');
+	 var index = $(e).closest("tr").index();
+	document.getElementById("firstName").value = contactList[index].firstName;
+	document.getElementById("lastName").value = contactList[index].lastName;
+	document.getElementById("status").value = contactList[index].status;
+	document.getElementById("yearOfBirth").value = contactList[index].yearOfBirth;
+	document.getElementById("address").value = contactList[index].address;
+	document.getElementById("phoneNumber").value = contactList[index].phoneNumber;
+}
 			

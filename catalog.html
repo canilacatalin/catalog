@@ -21,12 +21,16 @@
 <div class="playground">
 <table id="myTable">
 	<thead>
-        <td id="checkBox"> Check<br>box </td>
-		<td id="checkBox"> Nr </td>
+        <td id="smallBox"> Check<br>box </td>
+		<td id="smallBox"> Nr </td>
 		<td> First Name </td>
 		<td> Last Name</td>
 		<td> <button id="statusOptions">Status </button> </td>
-		<div id="panel"> <button id="student" class="studentOption"> Filter student </button> <button class="teacherOption" id="teacher"> Filter teacher </div>
+		<div id="panel">
+		<button class="studentOption" id="student"> Filter student </button> 
+		<button class="teacherOption" id="teacher"> Filter teacher </button> 
+		<button id="cancel"> Cancel filter </button>
+		</div>
 		<td> Operations </td>      
     </thead>
             <tbody id="tableBody">

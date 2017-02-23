@@ -17,7 +17,16 @@ input[type=checkbox]
   -moz-transform: scale(2);
   padding: 10px;
 }
-#checkBox {
+
+.checkBox {
+	width: 60px;
+	font-size: 25px;
+}
+#checkBox{
+	width: 60px;
+	font-size: 25px;
+}
+#smallBox{
 	width: 60px;
 	font-size: 25px;
 }
@@ -93,6 +102,10 @@ label {
 	margin-left: 600px;
 }
 .teacherOption{
+	font-size: 20px;
+	font-family: Impact;
+}
+#cancel{
 	font-size: 20px;
 	font-family: Impact;
 }
