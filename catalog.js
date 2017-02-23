@@ -1,6 +1,5 @@
 
- $(document).ready(function() {
-
+ $(document).ready(function() {	
             $('#wrapper').dialog({
                 autoOpen: false,
                 title: 'Informations:',
@@ -22,15 +21,21 @@
 
 		$("#addButton").click(function(){
 		addToListAndTable();
+		document.getElementById("saveEdit").disabled = true;
 		clearDialogAndInputFields();
 		});
-		
 	
     $('.deleteButton').click(function(){
 		removeCheckedRows(contactList);
 		regenerateTable(contactList);
        });
-   
+   $("#saveEdit").click(function(){
+	   
+		saveEdit(storedIndex[0]);
+		storedIndex.splice(0,1);
+		regenerateTable(contactList);
+		clearDialogAndInputFields();
+		});
 
 		
 	$("#statusOptions").click(function(){
@@ -48,6 +53,7 @@
 	});
  });
 
+	var storedIndex = [];
 	var contactList = [];
 	var nr = 0;
 	
@@ -66,6 +72,7 @@
 	function addToListAndTable(){
 		
 		var ID = generateRandomUniqueID();
+		alert(ID);
 		var firstName = document.getElementById("firstName");
 		var lastName = document.getElementById("lastName");
 		var status = document.getElementById("status");
@@ -148,12 +155,26 @@ function generateRandomUniqueID(){
 
 function edit(e){
 	$('#wrapper').dialog('open');
+	document.getElementById("saveEdit").disabled = false;
 	 var index = $(e).closest("tr").index();
+	 storedIndex.push(index);
 	document.getElementById("firstName").value = contactList[index].firstName;
 	document.getElementById("lastName").value = contactList[index].lastName;
 	document.getElementById("status").value = contactList[index].status;
 	document.getElementById("yearOfBirth").value = contactList[index].yearOfBirth;
 	document.getElementById("address").value = contactList[index].address;
 	document.getElementById("phoneNumber").value = contactList[index].phoneNumber;
+	
 }
+
+function saveEdit(i){
+	contactList[i].firstName = document.getElementById("firstName").value;
+	contactList[i].lastName = document.getElementById("lastName").value;
+	contactList[i].status = document.getElementById("status").value;
+	contactList[i].yearOfBirth = document.getElementById("yearOfBirth").value;
+	contactList[i].address = document.getElementById("address").value;
+	contactList[i].phoneNumber = document.getElementById("phoneNumber").value;
+}
+
+
 			
