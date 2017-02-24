@@ -47,6 +47,7 @@ input[type=checkbox]
 }
 
 
+
 td {
 	width: 210px;
 	border-style: solid;
@@ -78,29 +79,32 @@ td {
 
 label {
 	color: white;
-	font-size: 20px;
+	font-size: 30px;
 }
 
 #addButton {
 	font-family: Impact;
-	font-size: 25px;
-	margin-top: 140px;
-	margin-left: 160px;
-	position: absolute;
+	font-size: 30px;
+	margin-top: 100px;
+	margin-left: 350px;
 }
 #saveEdit {
-	margin-top: 140px;
-	margin-left: 400px;
+	margin-top: 100px;
 	font-family: Impact;
-	font-size: 25px;
-	position:absolute;
+	font-size: 30px;
+	margin-left: 350px;
+}
+#cancelPanelButton {
+	margin-top: 100px;
+	font-family: Impact;
+	font-size: 30px;
 }
 #panel {
 	height:100px;
 	display:none;
 	position: absolute;
 }
-#statusOptions {
+#statusOptions, #lastNameSort, #firstNameSort {
 	font-size: 30px;
 	font-family: Impact;
 }
@@ -113,7 +117,17 @@ label {
 	font-size: 20px;
 	font-family: Impact;
 }
-#cancel{
+#cancelFilter{
 	font-size: 20px;
 	font-family: Impact;
+}
+#yearOfBirth {
+	width: 50px;
+}
+
+#status {
+	font-size: 30px;
+	font-family: Impact;
+	width: 150px;
+	text-align: center;
 }

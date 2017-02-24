@@ -1,27 +1,30 @@
 
  $(document).ready(function() {	
-            $('#wrapper').dialog({
-                autoOpen: false,
-                title: 'Informations:',
-				height: 400,
-				width: 1000,
-			show:{
-                effect: "fade",
-                duration: 1000
-				 },
-            hide:{
-                effect: "fade",
-                duration: 500
-				 }
+    $('#wrapper').dialog({
+        autoOpen: false,
+        title: 'Informations:',
+		height: 800,
+		width: 1150,
+		show:{
+            effect: "fade",
+            duration: 1000
+			},
+        hide:{
+            effect: "fade",
+            duration: 500
+			}
+    });
+	
+    $('#opener').click(function() {
+            $('#wrapper').dialog('open');
+			ChangeDisplayOfEditAndAddButtons("none", "initial");
             });
-                $('#opener').click(function() {
-                $('#wrapper').dialog('open');
-                });
-				
+	$('#cancelPanelButton').click(function(){
+		clearDialogAndInputFields();
+	});	
 
-		$("#addButton").click(function(){
+	$("#addButton").click(function(){
 		addToListAndTable();
-		document.getElementById("saveEdit").disabled = true;
 		clearDialogAndInputFields();
 		});
 	
@@ -29,7 +32,7 @@
 		removeCheckedRows(contactList);
 		regenerateTable(contactList);
        });
-   $("#saveEdit").click(function(){
+    $("#saveEdit").click(function(){
 	   
 		saveEdit(storedIndex[0]);
 		storedIndex.splice(0,1);
@@ -37,7 +40,14 @@
 		clearDialogAndInputFields();
 		});
 
-		
+	$("#firstNameSort").click(function(){
+		SortAlphabetically(contactList, "firstName");
+		regenerateTable(contactList);
+	});
+	$("#lastNameSort").click(function(){
+		SortAlphabetically(contactList, "lastName");
+		regenerateTable(contactList);
+	});		
 	$("#statusOptions").click(function(){
         $("#panel").slideToggle("slow");
     });
@@ -47,7 +57,7 @@
 	$("#teacher").click(function(){
 		filter("teacher");
 	});
-	$("#cancel").click(function(){
+	$("#cancelFilter").click(function(){
 		regenerateTable(contactList);
 		$("#panel").slideToggle();
 	});
@@ -57,7 +67,6 @@
 	var contactList = [];
 	var nr = 0;
 	
-	// TODO : add ID - random number
 	function Person(ID, firstName, lastName, status, yearOfBirth, address, phoneNumber)
 	{
 		this.ID = ID;
@@ -72,7 +81,6 @@
 	function addToListAndTable(){
 		
 		var ID = generateRandomUniqueID();
-		alert(ID);
 		var firstName = document.getElementById("firstName");
 		var lastName = document.getElementById("lastName");
 		var status = document.getElementById("status");
@@ -86,7 +94,7 @@
 		}
 		regenerateTable(contactList);		
 	}
-	// TODO :  rename	
+	
 	function regenerateTable(list){
 		var number = 1;
 		var Table = document.getElementById("tableBody");
@@ -100,7 +108,6 @@
 		
 	}
 	
-	// TODO  :rename
 	function clearDialogAndInputFields(){
 		$('#wrapper').dialog('close');
 		var selectAll = document.querySelectorAll(".inputs");
@@ -155,7 +162,7 @@ function generateRandomUniqueID(){
 
 function edit(e){
 	$('#wrapper').dialog('open');
-	document.getElementById("saveEdit").disabled = false;
+	ChangeDisplayOfEditAndAddButtons("initial", "none")
 	 var index = $(e).closest("tr").index();
 	 storedIndex.push(index);
 	document.getElementById("firstName").value = contactList[index].firstName;
@@ -176,5 +183,35 @@ function saveEdit(i){
 	contactList[i].phoneNumber = document.getElementById("phoneNumber").value;
 }
 
+function isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
 
-			
+function lettersOnly(evt) {
+       evt = (evt) ? evt : event;
+       var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :
+          ((evt.which) ? evt.which : 0));
+       if (charCode > 31 && (charCode < 65 || charCode > 90) &&
+          (charCode < 97 || charCode > 122)) {
+          return false;
+       }
+       return true;
+     }
+function ChangeDisplayOfEditAndAddButtons(editAttribute, addAttribute)
+{
+	document.getElementById("saveEdit").style.display = editAttribute;
+	document.getElementById("addButton").style.display = addAttribute;
+}
+
+function SortAlphabetically(list, sortBy){
+	
+	function sortByKey(a,b){
+		var x = a[sortBy].toUpperCase(); 
+        var y = b[sortBy].toUpperCase(); 
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+	}
+	list.sort(sortByKey);
+}
