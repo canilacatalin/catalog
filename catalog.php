@@ -1,3 +1,5 @@
+<?php include('dbconnect.php'); ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -10,8 +12,6 @@
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
-
-
 
 </head>
 
@@ -43,30 +43,34 @@
 
 <button id="opener" class="addButton" >Add new person </button>
 <div id="wrapper">
+
+<form action='user_process.php' method="post" name="user">
+
 <label for="firstName"> First Name: </label>
-<input type="text" id="firstName" class="inputs" onkeypress="return lettersOnly(event)">
+<input type="text" id="firstName" class="inputs" name="first_name" onkeypress="return lettersOnly(event)">
 <br><br><br><br>
 <label for="lastName"> Last Name: </label>
-<input type="text" id="lastName" class="inputs" onkeypress="return lettersOnly(event)" > 
+<input type="text" id="lastName" class="inputs" name="last_name" onkeypress="return lettersOnly(event)" > 
 <br><br><br><br>
 <label for="yearOfBirth"> Year of birth: </label>
-<input type="text" maxlength="4" placeholder="YYYY" id="yearOfBirth" class="inputs" onkeypress="return isNumberKey(event)">
+<input type="text" maxlength="4" name="year_of_birth" placeholder="YYYY" id="yearOfBirth" class="inputs" onkeypress="return isNumberKey(event)">
 <br><br><br><br>
 <label for="address"> Address: </label>
-<input type="text" id="address" class="inputs">
+<input type="text" id="address" class="inputs" name="the_address">
 <br><br><br><br>
 <label for="phoneNumber"> Phone number: </label>
-<input type="text" id="phoneNumber" class="inputs" onkeypress="return isNumberKey(event)">
+<input type="text" id="phoneNumber" name="phone_number" class="inputs" onkeypress="return isNumberKey(event)">
 <br><br>
 <label for="status"> What is your status in University: </label>
-<select id="status">
+<select id="status" name="Sstatus">
 <option label="student" > student </option>
 <option label="teacher" > teacher </option>
 </select>
 <br>
-<input type="button" id="addButton" value="Add contact to table">
+<input type="submit" id="addButton" value="Add contact to table">
 <input type="button" id="saveEdit" value="Save edit">
 <input type="button" id="cancelPanelButton" value="Cancel">
+</form>
 </div>
 <button type="button" class="deleteButton">Delete </button>
 
