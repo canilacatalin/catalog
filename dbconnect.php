@@ -10,5 +10,7 @@
 	{
 		echo "Failed to connect to mySQL: " . mysqli_connect_error();
 	}
-		echo "connection succesful";
+	
+
+
 ?>

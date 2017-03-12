@@ -18,6 +18,8 @@
     $('#opener').click(function() {
             $('#wrapper').dialog('open');
 			ChangeDisplayOfEditAndAddButtons("none", "initial");
+			clearDialogAndInputFields();
+			setValue("addButton", "Add to contacts");
             });
 	$('#cancelPanelButton').click(function(){
 		clearDialogAndInputFields();
@@ -25,11 +27,11 @@
 
 	$("#addButton").click(function(){
 		addToListAndTable();
-		clearDialogAndInputFields();
+		$('#wrapper').dialog('close');
 		});
 	
     $('.deleteButton').click(function(){
-		removeCheckedRows(contactList);
+		removeCheckedRows();
 		regenerateTable(contactList);
        });
     $("#saveEdit").click(function(){
@@ -37,7 +39,7 @@
 		saveEdit(storedIndex[0]);
 		storedIndex.splice(0,1);
 		regenerateTable(contactList);
-		clearDialogAndInputFields();
+		$('#wrapper').dialog('close');
 		});
 
 	$("#firstNameSort").click(function(){
@@ -61,8 +63,11 @@
 		regenerateTable(contactList);
 		$("#panel").slideToggle();
 	});
+	
+	
  });
-
+	var editArray = [];
+	var checkedBoxes = [];
 	var storedIndex = [];
 	var contactList = [];
 	var nr = 0;
@@ -80,7 +85,8 @@
 	
 	function addToListAndTable(){
 		
-		var ID = generateRandomUniqueID();
+		var idof = document.getElementById("addButton");
+		var ID = idof.getAttribute('value');	
 		var firstName = document.getElementById("firstName");
 		var lastName = document.getElementById("lastName");
 		var status = document.getElementById("status");
@@ -101,15 +107,14 @@
 		Table.innerHTML = "";
 		for( var i in list)
 		{
-			$("#tableBody").append('<tr><td id="smallBox"><input type="checkBox" id="'+ list[i].ID +'" class="checkBox"></td><td id="smallBox">' + number + '</td> <td>' + list[i].firstName + '</td> <td>' + list[i].lastName + '</td> <td>'
-			+ list[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit(this)"> <input type="button" value="Delete" onClick="deleteThisRow(this)" id="'+ list[i].ID +'"> </td></tr>');
-		number++;
+			$("#tableBody").append('<tr><td id="smallBox"><input type="checkBox" value="'+ list[i].ID +'" class="checkBox"></td><td id="smallBox">' + number + '</td> <td>' + list[i].firstName + '</td> <td>' + list[i].lastName + '</td> <td>'
+			+ list[i].status + '</td><td> <input id="edit" type="button" value="Edit" onClick="edit(this)"> <input type="button" value="Delete" onClick="deleteThisRow(this); deleteInDb(\''+ list[i].firstName +'\', \''+ list[i].lastName +'\' )" id="'+ list[i].ID +'"> </td></tr>');
+			number++;
 		}
 		
 	}
 	
 	function clearDialogAndInputFields(){
-		$('#wrapper').dialog('close');
 		var selectAll = document.querySelectorAll(".inputs");
 		for(var i in selectAll){
 			selectAll[i].value = '';
@@ -117,11 +122,13 @@
 	}
 
 
-function removeCheckedRows(list){
-	
+function removeCheckedRows(){
 	$(".checkBox:checked").each(function(){
-		deleteById($(this).attr('id'));
+		deleteById($(this).attr('value'));
+		var checkboxId = $(this).attr('value');
+		checkedBoxes.push(checkboxId);
 	});
+	JsArrayToPhp(checkedBoxes);
 }
 
 function deleteById(ID)
@@ -156,15 +163,20 @@ function filter(givenStatus){
 	regenerateTable(listOfThatStatus);
 }
 
-function generateRandomUniqueID(){
-	return Math.random().toString(36).substr(2, 9);
+function generateRandomID(row){
+	var i = Math.random().toString(36).substr(2, 9);
+	row.setAttribute("value", "" + i);
+
+	
 }	
 
 function edit(e){
 	$('#wrapper').dialog('open');
-	ChangeDisplayOfEditAndAddButtons("initial", "none")
+	clearDialogAndInputFields();
+	ChangeDisplayOfEditAndAddButtons("initial", "none");
 	 var index = $(e).closest("tr").index();
 	 storedIndex.push(index);
+	 document.getElementById("saveEdit").value = contactList[index].ID;
 	document.getElementById("firstName").value = contactList[index].firstName;
 	document.getElementById("lastName").value = contactList[index].lastName;
 	document.getElementById("status").value = contactList[index].status;
@@ -175,6 +187,7 @@ function edit(e){
 }
 
 function saveEdit(i){
+	
 	contactList[i].firstName = document.getElementById("firstName").value;
 	contactList[i].lastName = document.getElementById("lastName").value;
 	contactList[i].status = document.getElementById("status").value;
@@ -214,4 +227,21 @@ function SortAlphabetically(list, sortBy){
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 	}
 	list.sort(sortByKey);
+}
+
+function deleteInDb(fn, ln)
+{
+	window.location.href= "functions.php?firstname=" + fn + "&lastname=" + ln;
+}
+
+
+function setValue(id, val)
+{
+	var idof = document.getElementById(id);
+	idof.setAttribute("value", val);	
+}
+
+function JsArrayToPhp(arrayToConvert){
+	window.location.href = 'functions.php?arr=' + JSON.stringify(arrayToConvert);
+	
 }

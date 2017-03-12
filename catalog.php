@@ -1,5 +1,7 @@
-<?php include('dbconnect.php'); ?>
-
+<?php include('dbconnect.php');
+$sql = "SELECT * FROM persons";
+$result = $db_connect->query($sql);
+?>
 <!DOCTYPE html>
 <html>
 
@@ -34,20 +36,33 @@
 		</div>
 		<td> Operations </td>      
     </thead>
+			
             <tbody id="tableBody">
-                
+			<?php if($result->num_rows > 0){
+				while($row = $result->fetch_assoc()){
+				?>	
+					<script type="text/javascript">
+					var contact = new Person("<?php echo $row['PersonID'] ?>" , "<?php echo $row['FirstName'] ?>" , "<?php echo $row['LastName'] ?>" , "<?php echo $row['Status'] ?>" , "<?php echo $row['DateOfBirth'] ?>" , "<?php echo $row['Address'] ?>" , "<?php echo $row['PhoneNumber'] ?>");
+			contactList.push(contact);
+			regenerateTable(contactList);
+					</script>
+			<?php	}
+			}
+			?>
+			
+			
             </tbody>
-
+			
 
 </table>
 
-<button id="opener" class="addButton" >Add new person </button>
+<button id="opener" class="openDialog" >Add new person </button>
 <div id="wrapper">
 
-<form action='user_process.php' method="post" name="user">
+<form action='user_process.php' method="post" name="userPost">
 
 <label for="firstName"> First Name: </label>
-<input type="text" id="firstName" class="inputs" name="first_name" onkeypress="return lettersOnly(event)">
+<input type="text" id="firstName" class="inputs" name="first_name" maxlength="20" onkeypress="return lettersOnly(event)">
 <br><br><br><br>
 <label for="lastName"> Last Name: </label>
 <input type="text" id="lastName" class="inputs" name="last_name" onkeypress="return lettersOnly(event)" > 
@@ -67,9 +82,11 @@
 <option label="teacher" > teacher </option>
 </select>
 <br>
-<input type="submit" id="addButton" value="Add contact to table">
-<input type="button" id="saveEdit" value="Save edit">
+
+<input type="submit" id="addButton" onClick="generateRandomID(this)" name="thisId">
+<input type="submit" id="saveEdit" name="test">
 <input type="button" id="cancelPanelButton" value="Cancel">
+
 </form>
 </div>
 <button type="button" class="deleteButton">Delete </button>

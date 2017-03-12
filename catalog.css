@@ -58,7 +58,7 @@ td {
 	
 }
 
-.addButton {
+.openDialog {
 	
 	margin-top: 550px;
 	margin-left: 370px;
@@ -69,6 +69,7 @@ td {
 	margin-top: 550px;
 	font-family: Impact;
 	font-size: 25px;
+	
 }
 
 .ui-dialog.ui-widget-content { 
@@ -88,11 +89,19 @@ label {
 	margin-top: 100px;
 	margin-left: 350px;
 }
+
 #saveEdit {
+	text-indent: -9999px;               
+    height: 45px;                        
+    width: 100px;
+    white-space: nowrap; 
 	margin-top: 100px;
 	font-family: Impact;
 	font-size: 30px;
 	margin-left: 350px;
+	background-image: url('pictures/edit.png');
+	background-repeat: no-repeat;
+    background-size:cover;
 }
 #cancelPanelButton {
 	margin-top: 100px;
